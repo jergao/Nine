@@ -27,6 +27,16 @@ class Note:
         self.ID = randomID()
 
 
+
+def printnote(noteid, verbose=1):
+    if verbose == 0:
+        print(notes[noteid].content)
+    if verbose == 1:
+        print(str(notes[noteid].time.strftime("%c")) + "  |" + notes[noteid].content)
+    if verbose == 2:
+        print(notes[noteid].content + "  |" + str(notes[noteid].time.strftime("%c")) + " @" + str(notes[noteid].ID))
+
+
 try:
     pickle_in = open("notes.pickle", "rb")
     notes = pickle.load(pickle_in)
@@ -35,17 +45,11 @@ except (FileNotFoundError, EOFError) as e:
     notes = {}
 
 
-def printnote(noteid, verbose=1):
-    if verbose == 0:
-        print(notes[noteid].content)
-    if verbose == 1:
-        print(str(notes[noteid].time.strftime("%c")) + "  |" + notes[noteid].content + "\n")
-    if verbose == 2:
-        print(notes[noteid].content + "  |" + str(notes[noteid].time.strftime("%c")) + " @" + str(notes[noteid].ID))
-
-
+string = ""
 for ID in notes:
-    printnote(ID)
+    string += str(notes[ID].time.strftime("%c")) + "  |" + notes[ID].content + "\n"
+print(string)
+del string
 
 x = ""
 while x != "QUIT":
@@ -56,4 +60,4 @@ while x != "QUIT":
     notes[current.ID] = current
     pickle.dump(notes, open("notes.pickle", "wb"))
 
-print(notes)
+pickle.dump(notes, open("notes.pickle", "wb"))
